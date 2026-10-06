@@ -17,7 +17,7 @@ button,input{font:inherit}
 .btn{border:0;border-radius:24px;padding:12px 18px;font-weight:800;color:#fff;min-height:45px}.primary{background:#ff4f91}.dark{background:#202536}
 main{padding:10px 14px 45px}.head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 13px}.head h2{font-size:21px;margin:0}.head span{color:#ff6da6;font-size:12px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px}.chip{white-space:nowrap;border:1px solid #292f41;background:#11141e;color:#c4c8d4;border-radius:20px;padding:9px 14px}.chip.active{background:#ff4f9120;color:#fff;border-color:#ff4f91}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{background:#11141c;border:1px solid #23283a;border-radius:12px;overflow:hidden;min-width:0}.poster{height:205px;background:#111;display:flex;align-items:flex-end;padding:11px;position:relative;overflow:hidden}.posterArt{position:absolute;inset:0;width:100%;height:100%;display:block}.poster>b{position:relative;z-index:2;text-shadow:0 2px 8px #000}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#000d)}.poster b{position:relative;z-index:1;font-size:15px}.info{padding:10px}.info b{font-size:14px}.meta{color:#8f96a8;font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rate{color:#ffc85c;font-size:11px;margin-top:7px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{background:#11141c;border:1px solid #23283a;border-radius:12px;overflow:hidden;min-width:0}.poster{height:225px;background:#111;display:flex;align-items:flex-end;padding:11px;position:relative;overflow:hidden}.posterArt{position:absolute;inset:0;width:100%;height:100%;display:block}.poster>b{position:relative;z-index:2;text-shadow:0 2px 8px #000}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#000d)}.poster b{position:relative;z-index:1;font-size:15px}.info{padding:10px}.info b{font-size:14px}.meta{color:#8f96a8;font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rate{color:#ffc85c;font-size:11px;margin-top:7px}
 .modal{display:none;position:fixed;inset:0;background:#000d;z-index:20;padding:12px;overflow:auto}.modal.show{display:block}.box{background:#111520;border:1px solid #30374b;border-radius:16px;margin-top:30px;overflow:hidden}.detailposter{height:220px;background:var(--g);display:flex;align-items:flex-end;padding:18px;font-size:25px;font-weight:900}.detail{padding:18px}.close{float:left;border:0;border-radius:50%;width:40px;height:40px;background:#252b3a;color:#fff;font-size:22px}.detail p{color:#b7bdca;line-height:1.8}.eps{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.ep{border:0;background:#242a3b;color:#fff;border-radius:7px;padding:9px 12px;min-width:42px}.watch{display:none;position:fixed;inset:0;background:#06070b;z-index:30;padding:18px}.watch.show{display:block}.screen{height:62vh;margin-top:25px;border:1px solid #292f40;border-radius:14px;background:radial-gradient(circle,#27223d,#0b0d12 65%);display:flex;align-items:center;justify-content:center;text-align:center}.play{font-size:55px}
 .toast{position:fixed;bottom:18px;left:18px;right:18px;background:#1b2030;border:1px solid #343b50;border-radius:12px;padding:13px;text-align:center;display:none;z-index:40}
 </style>
@@ -73,26 +73,56 @@ function render(){
 }
 function art(a){
  const i=anime.indexOf(a);
- const palettes=[
-  ["#173b62","#f1a33a","#ef5b62"],["#173d45","#e6b84c","#d95d78"],
-  ["#26265a","#9d73ff","#f04f7e"],["#263a2b","#c5a76b","#8c6d5a"],
-  ["#171c48","#7258d8","#50a6df"],["#123f5a","#2dd4bf","#ffb84d"],
-  ["#4d2d3b","#e7b96d","#65a86b"],["#173f50","#f18a45","#e8d05b"]
+ const themes=[
+  ["#081a35","#f5b84b","#e94e77","#8ad7ff"],["#102c35","#f1c45b","#e75b72","#b7f0e8"],
+  ["#17163b","#9b72ff","#ef4f8f","#6de0ff"],["#172b20","#d2b06c","#9c6658","#dfe9b0"],
+  ["#111735","#765ee8","#50a9df","#b88cff"],["#07384b","#2dd4bf","#ffb84d","#8ee7ff"],
+  ["#38202d","#e8bd69","#72b46e","#ff7e9e"],["#173b4b","#f28b45","#e9d05b","#7bd7ef"]
  ];
- const c=palettes[i%palettes.length];
- return `<svg class="posterArt" viewBox="0 0 400 560" preserveAspectRatio="xMidYMid slice">
- <defs><linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${c[0]}"/><stop offset="1" stop-color="#080910"/></linearGradient></defs>
- <rect width="400" height="560" fill="url(#g${i})"/>
- <circle cx="${90+i*25}" cy="120" r="105" fill="${c[1]}" opacity=".22"/>
- <circle cx="${310-i*12}" cy="380" r="145" fill="${c[2]}" opacity=".18"/>
- <path d="M40 470 Q120 315 200 410 T360 360 L400 560 H0Z" fill="#05060b" opacity=".78"/>
- <path d="M115 390 Q200 255 285 390 L300 500 H100Z" fill="#111522" stroke="${c[1]}" stroke-width="4"/>
- <circle cx="200" cy="285" r="58" fill="#141827" stroke="${c[2]}" stroke-width="4"/>
- <path d="M150 265 Q200 215 250 265 L238 305 Q200 335 162 305Z" fill="${c[1]}" opacity=".8"/>
- <path d="M165 282 L190 278 M210 278 L235 282" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".85"/>
- <path d="M125 410 L55 490 M275 410 L345 490" stroke="${c[2]}" stroke-width="15" stroke-linecap="round" opacity=".7"/>
- <text x="24" y="48" fill="#fff" font-size="18" font-weight="700" letter-spacing="3">RINAVERSE ORIGINAL</text>
- <text x="24" y="520" fill="#fff" font-size="27" font-weight="900">${a[0]}</text>
+ const c=themes[i%themes.length];
+ const poses=[
+  {hx:200,hy:245,rx:74,ry:82,hair:"M120 245 Q125 120 200 105 Q275 120 280 245 L245 210 Q200 175 155 210Z",coat:"#13233e"},
+  {hx:202,hy:250,rx:70,ry:80,hair:"M130 230 Q135 125 202 105 Q270 125 278 230 L250 205 Q205 180 150 205Z",coat:"#172d37"},
+  {hx:200,hy:245,rx:72,ry:82,hair:"M122 238 Q128 118 200 100 Q272 118 278 238 L245 200 Q200 170 155 200Z",coat:"#20204b"},
+  {hx:198,hy:250,rx:73,ry:84,hair:"M120 242 Q128 125 198 105 Q268 125 278 242 L242 204 Q198 175 155 205Z",coat:"#213226"},
+  {hx:202,hy:246,rx:72,ry:83,hair:"M125 240 Q130 115 202 102 Q274 115 279 240 L245 202 Q202 172 158 203Z",coat:"#181c49"},
+  {hx:200,hy:248,rx:72,ry:82,hair:"M124 242 Q132 120 200 103 Q268 120 276 242 L244 203 Q200 175 157 205Z",coat:"#103b4c"},
+  {hx:200,hy:248,rx:72,ry:82,hair:"M122 242 Q130 118 200 103 Q270 118 278 242 L245 204 Q200 174 155 205Z",coat:"#4a2939"},
+  {hx:200,hy:250,rx:72,ry:82,hair:"M124 242 Q132 120 200 104 Q268 120 276 242 L244 204 Q200 174 157 205Z",coat:"#173e4d"}
+ ][i%8];
+ const glow=`g${i}`, shine=`s${i}`;
+ const accent=c[2], light=c[3];
+ return `<svg class="posterArt" viewBox="0 0 400 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${a[0]} original poster">
+ <defs>
+  <linearGradient id="${glow}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${c[0]}"/><stop offset=".55" stop-color="#11162a"/><stop offset="1" stop-color="#05060b"/></linearGradient>
+  <radialGradient id="${shine}" cx=".5" cy=".25" r=".75"><stop stop-color="${c[1]}" stop-opacity=".42"/><stop offset="1" stop-color="${c[1]}" stop-opacity="0"/></radialGradient>
+  <filter id="blur${i}"><feGaussianBlur stdDeviation="16"/></filter>
+ </defs>
+ <rect width="400" height="560" fill="url(#${glow})"/>
+ <circle cx="90" cy="120" r="115" fill="url(#${shine})"/>
+ <circle cx="320" cy="330" r="145" fill="${accent}" opacity=".13" filter="url(#blur${i})"/>
+ <path d="M0 390 Q70 330 135 380 T270 365 T400 390 V560 H0Z" fill="#05070d" opacity=".8"/>
+ <g opacity=".9">
+  <path d="M28 88 L115 40 M300 55 L372 105 M42 285 L110 250 M292 250 L365 285" stroke="${light}" stroke-width="3" opacity=".38"/>
+  <circle cx="335" cy="110" r="5" fill="${light}"/><circle cx="60" cy="175" r="4" fill="${c[1]}"/>
+  <circle cx="355" cy="205" r="3" fill="${accent}"/><circle cx="92" cy="325" r="4" fill="${light}"/>
+ </g>
+ <g>
+  <path d="M105 515 Q112 395 155 350 Q200 325 245 350 Q288 395 295 515Z" fill="${poses.coat}" stroke="${light}" stroke-width="4"/>
+  <path d="M150 355 Q200 405 250 355 L270 500 Q200 535 130 500Z" fill="#0b0f19" opacity=".75"/>
+  <path d="${poses.hair}" fill="${c[1]}" stroke="${accent}" stroke-width="5"/>
+  <ellipse cx="${poses.hx}" cy="${poses.hy}" rx="${poses.rx}" ry="${poses.ry}" fill="#f2c9a6" stroke="${light}" stroke-width="3"/>
+  <path d="M${poses.hx-72} ${poses.hy-12} Q${poses.hx-40} ${poses.hy-75} ${poses.hx} ${poses.hy-82} Q${poses.hx+45} ${poses.hy-72} ${poses.hx+72} ${poses.hy-12} L${poses.hx+48} ${poses.hy-38} Q${poses.hx} ${poses.hy-58} ${poses.hx-48} ${poses.hy-38}Z" fill="${c[1]}"/>
+  <path d="M${poses.hx-43} ${poses.hy+4} Q${poses.hx-23} ${poses.hy-8} ${poses.hx-4} ${poses.hy+4}" fill="none" stroke="#202431" stroke-width="5" stroke-linecap="round"/>
+  <path d="M${poses.hx+4} ${poses.hy+4} Q${poses.hx+23} ${poses.hy-8} ${poses.hx+43} ${poses.hy+4}" fill="none" stroke="#202431" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="${poses.hx-22}" cy="${poses.hy+4}" r="5" fill="${accent}"/><circle cx="${poses.hx+22}" cy="${poses.hy+4}" r="5" fill="${accent}"/>
+  <path d="M${poses.hx-13} ${poses.hy+38} Q${poses.hx} ${poses.hy+47} ${poses.hx+13} ${poses.hy+38}" fill="none" stroke="#8d4d58" stroke-width="4" stroke-linecap="round"/>
+  <path d="M155 410 L78 500 M245 410 L322 500" stroke="${accent}" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+ </g>
+ <rect x="18" y="18" width="150" height="28" rx="14" fill="#0008" stroke="${light}" stroke-opacity=".35"/>
+ <text x="32" y="37" fill="#fff" font-size="12" font-weight="800" letter-spacing="1.5">RINAVERSE • ORIGINAL</text>
+ <text x="22" y="535" fill="#fff" font-size="24" font-weight="900">${a[0]}</text>
+ <text x="22" y="556" fill="${light}" font-size="11" font-weight="700">ANIME DISCOVERY</text>
  </svg>`;
 }
 function card(a){
