@@ -17,7 +17,7 @@ button,input{font:inherit}
 .btn{border:0;border-radius:24px;padding:12px 18px;font-weight:800;color:#fff;min-height:45px}.primary{background:#ff4f91}.dark{background:#202536}
 main{padding:10px 14px 45px}.head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 13px}.head h2{font-size:21px;margin:0}.head span{color:#ff6da6;font-size:12px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px}.chip{white-space:nowrap;border:1px solid #292f41;background:#11141e;color:#c4c8d4;border-radius:20px;padding:9px 14px}.chip.active{background:#ff4f9120;color:#fff;border-color:#ff4f91}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{background:#11141c;border:1px solid #23283a;border-radius:12px;overflow:hidden;min-width:0}.poster{height:225px;background:#111;display:flex;align-items:flex-end;padding:11px;position:relative;overflow:hidden}.posterArt{position:absolute;inset:0;width:100%;height:100%;display:block}.poster>b{position:relative;z-index:2;text-shadow:0 2px 8px #000}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#000d)}.poster b{position:relative;z-index:1;font-size:15px}.info{padding:10px}.info b{font-size:14px}.meta{color:#8f96a8;font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rate{color:#ffc85c;font-size:11px;margin-top:7px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{background:#11141c;border:1px solid #23283a;border-radius:12px;overflow:hidden;min-width:0}.poster{height:245px;background:#111;display:flex;align-items:flex-end;padding:11px;position:relative;overflow:hidden}.posterArt{position:absolute;inset:0;width:100%;height:100%;display:block}.poster>b{position:relative;z-index:2;text-shadow:0 2px 8px #000}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#000d)}.poster b{position:relative;z-index:1;font-size:15px}.info{padding:10px}.info b{font-size:14px}.meta{color:#8f96a8;font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rate{color:#ffc85c;font-size:11px;margin-top:7px}
 .modal{display:none;position:fixed;inset:0;background:#000d;z-index:20;padding:12px;overflow:auto}.modal.show{display:block}.box{background:#111520;border:1px solid #30374b;border-radius:16px;margin-top:30px;overflow:hidden}.detailposter{height:220px;background:var(--g);display:flex;align-items:flex-end;padding:18px;font-size:25px;font-weight:900}.detail{padding:18px}.close{float:left;border:0;border-radius:50%;width:40px;height:40px;background:#252b3a;color:#fff;font-size:22px}.detail p{color:#b7bdca;line-height:1.8}.eps{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.ep{border:0;background:#242a3b;color:#fff;border-radius:7px;padding:9px 12px;min-width:42px}.watch{display:none;position:fixed;inset:0;background:#06070b;z-index:30;padding:18px}.watch.show{display:block}.screen{height:62vh;margin-top:25px;border:1px solid #292f40;border-radius:14px;background:radial-gradient(circle,#27223d,#0b0d12 65%);display:flex;align-items:center;justify-content:center;text-align:center}.play{font-size:55px}
 .toast{position:fixed;bottom:18px;left:18px;right:18px;background:#1b2030;border:1px solid #343b50;border-radius:12px;padding:13px;text-align:center;display:none;z-index:40}
 </style>
@@ -74,55 +74,64 @@ function render(){
 function art(a){
  const i=anime.indexOf(a);
  const themes=[
-  ["#081a35","#f5b84b","#e94e77","#8ad7ff"],["#102c35","#f1c45b","#e75b72","#b7f0e8"],
-  ["#17163b","#9b72ff","#ef4f8f","#6de0ff"],["#172b20","#d2b06c","#9c6658","#dfe9b0"],
-  ["#111735","#765ee8","#50a9df","#b88cff"],["#07384b","#2dd4bf","#ffb84d","#8ee7ff"],
-  ["#38202d","#e8bd69","#72b46e","#ff7e9e"],["#173b4b","#f28b45","#e9d05b","#7bd7ef"]
+  ["#090d1d","#ff304f","#56d8ff","#ffd166","Blade Runner"],
+  ["#06243b","#ff9f43","#4cc9f0","#ffe66d","Sea Voyager"],
+  ["#190d28","#ff4d6d","#9b5cff","#c7f9ff","Cursed Eclipse"],
+  ["#1d120e","#ff7b00","#f2d06b","#fff2b2","Titanfall"],
+  ["#071d27","#22d3ee","#8b5cf6","#d8f3ff","Neon Striker"],
+  ["#061e24","#00e0b8","#ff6b35","#b8fff2","Night Hunter"],
+  ["#20101a","#ff3d71","#f5c451","#ffe8a3","Street Kings"],
+  ["#15102c","#7c5cff","#2dd4bf","#e4dcff","Skybound"]
  ];
- const c=themes[i%themes.length];
- const poses=[
-  {hx:200,hy:245,rx:74,ry:82,hair:"M120 245 Q125 120 200 105 Q275 120 280 245 L245 210 Q200 175 155 210Z",coat:"#13233e"},
-  {hx:202,hy:250,rx:70,ry:80,hair:"M130 230 Q135 125 202 105 Q270 125 278 230 L250 205 Q205 180 150 205Z",coat:"#172d37"},
-  {hx:200,hy:245,rx:72,ry:82,hair:"M122 238 Q128 118 200 100 Q272 118 278 238 L245 200 Q200 170 155 200Z",coat:"#20204b"},
-  {hx:198,hy:250,rx:73,ry:84,hair:"M120 242 Q128 125 198 105 Q268 125 278 242 L242 204 Q198 175 155 205Z",coat:"#213226"},
-  {hx:202,hy:246,rx:72,ry:83,hair:"M125 240 Q130 115 202 102 Q274 115 279 240 L245 202 Q202 172 158 203Z",coat:"#181c49"},
-  {hx:200,hy:248,rx:72,ry:82,hair:"M124 242 Q132 120 200 103 Q268 120 276 242 L244 203 Q200 175 157 205Z",coat:"#103b4c"},
-  {hx:200,hy:248,rx:72,ry:82,hair:"M122 242 Q130 118 200 103 Q270 118 278 242 L245 204 Q200 174 155 205Z",coat:"#4a2939"},
-  {hx:200,hy:250,rx:72,ry:82,hair:"M124 242 Q132 120 200 104 Q268 120 276 242 L244 204 Q200 174 157 205Z",coat:"#173e4d"}
- ][i%8];
- const glow=`g${i}`, shine=`s${i}`;
- const accent=c[2], light=c[3];
- return `<svg class="posterArt" viewBox="0 0 400 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${a[0]} original poster">
+ const [bg,accent,accent2,light,title]=themes[i%themes.length];
+ const names=["Demon Slayer","One Piece","Jujutsu Kaisen","Attack on Titan","Solo Leveling","Blue Lock","SPY x FAMILY","Haikyu!!"];
+ const tag=["BLADE OF DAWN","OCEAN OF DREAMS","ECLIPSE CURSE","LAST WALL","SHADOW RISE","NEON FIELD","SECRET HOUSE","SKY SPIKE"][i%8];
+ const hair=["#171827","#111827","#252033","#3b2419","#121826","#071f25","#d8a85d","#b8b9ff"][i%8];
+ const jacket=["#16243a","#7d241f","#241b3f","#33231d","#121f3a","#123b3a","#2a1e27","#1e2a4d"][i%8];
+ const face=["#f1c2a7","#dca57d","#f2c7aa","#c99470","#d9a982","#efc3a3","#f0c8a7","#dcae8d"][i%8];
+ const weapon=i%4===0
+   ? `<path d="M90 425 L315 165" stroke="${light}" stroke-width="10" stroke-linecap="round"/><path d="M74 445 L104 415" stroke="${accent}" stroke-width="18" stroke-linecap="round"/>`
+   : i%4===1
+   ? `<path d="M292 430 Q335 350 315 280" fill="none" stroke="${accent2}" stroke-width="12"/><circle cx="310" cy="250" r="38" fill="none" stroke="${light}" stroke-width="5" opacity=".8"/>`
+   : i%4===2
+   ? `<path d="M80 390 Q205 300 320 390" fill="none" stroke="${accent}" stroke-width="14"/><path d="M110 370 L75 315 M290 370 L330 315" stroke="${light}" stroke-width="5"/>`
+   : `<path d="M95 420 L205 220 L315 420" fill="none" stroke="${accent2}" stroke-width="12"/><path d="M205 220 L205 445" stroke="${light}" stroke-width="5"/>`;
+ return `<svg class="posterArt" viewBox="0 0 400 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${a[0]} original anime-inspired poster">
  <defs>
-  <linearGradient id="${glow}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${c[0]}"/><stop offset=".55" stop-color="#11162a"/><stop offset="1" stop-color="#05060b"/></linearGradient>
-  <radialGradient id="${shine}" cx=".5" cy=".25" r=".75"><stop stop-color="${c[1]}" stop-opacity=".42"/><stop offset="1" stop-color="${c[1]}" stop-opacity="0"/></radialGradient>
-  <filter id="blur${i}"><feGaussianBlur stdDeviation="16"/></filter>
+  <linearGradient id="bg${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${bg}"/><stop offset=".58" stop-color="#11101d"/><stop offset="1" stop-color="#05060a"/></linearGradient>
+  <radialGradient id="glow${i}"><stop stop-color="${accent}" stop-opacity=".55"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="coat${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${jacket}"/><stop offset="1" stop-color="#05070c"/></linearGradient>
+  <filter id="blur${i}"><feGaussianBlur stdDeviation="20"/></filter>
  </defs>
- <rect width="400" height="560" fill="url(#${glow})"/>
- <circle cx="90" cy="120" r="115" fill="url(#${shine})"/>
- <circle cx="320" cy="330" r="145" fill="${accent}" opacity=".13" filter="url(#blur${i})"/>
- <path d="M0 390 Q70 330 135 380 T270 365 T400 390 V560 H0Z" fill="#05070d" opacity=".8"/>
- <g opacity=".9">
-  <path d="M28 88 L115 40 M300 55 L372 105 M42 285 L110 250 M292 250 L365 285" stroke="${light}" stroke-width="3" opacity=".38"/>
-  <circle cx="335" cy="110" r="5" fill="${light}"/><circle cx="60" cy="175" r="4" fill="${c[1]}"/>
-  <circle cx="355" cy="205" r="3" fill="${accent}"/><circle cx="92" cy="325" r="4" fill="${light}"/>
+ <rect width="400" height="560" fill="url(#bg${i})"/>
+ <circle cx="72" cy="112" r="125" fill="url(#glow${i})" filter="url(#blur${i})"/>
+ <circle cx="330" cy="270" r="135" fill="${accent2}" opacity=".13" filter="url(#blur${i})"/>
+ <g opacity=".42" stroke="${light}">
+  <path d="M0 170 L130 60 M275 35 L400 130 M0 345 L120 255 M290 330 L400 245" stroke-width="2"/>
+  <path d="M25 230 L85 170 M325 180 L380 125" stroke-width="5"/>
  </g>
+ <g fill="${light}">
+  <circle cx="42" cy="85" r="3"/><circle cx="350" cy="85" r="4"/><circle cx="70" cy="290" r="3"/>
+  <circle cx="340" cy="340" r="3"/><circle cx="120" cy="70" r="2"/><circle cx="270" cy="115" r="2"/>
+ </g>
+ <path d="M0 440 Q80 350 160 410 T320 390 T400 430 V560 H0Z" fill="#03050a" opacity=".9"/>
+ ${weapon}
  <g>
-  <path d="M105 515 Q112 395 155 350 Q200 325 245 350 Q288 395 295 515Z" fill="${poses.coat}" stroke="${light}" stroke-width="4"/>
-  <path d="M150 355 Q200 405 250 355 L270 500 Q200 535 130 500Z" fill="#0b0f19" opacity=".75"/>
-  <path d="${poses.hair}" fill="${c[1]}" stroke="${accent}" stroke-width="5"/>
-  <ellipse cx="${poses.hx}" cy="${poses.hy}" rx="${poses.rx}" ry="${poses.ry}" fill="#f2c9a6" stroke="${light}" stroke-width="3"/>
-  <path d="M${poses.hx-72} ${poses.hy-12} Q${poses.hx-40} ${poses.hy-75} ${poses.hx} ${poses.hy-82} Q${poses.hx+45} ${poses.hy-72} ${poses.hx+72} ${poses.hy-12} L${poses.hx+48} ${poses.hy-38} Q${poses.hx} ${poses.hy-58} ${poses.hx-48} ${poses.hy-38}Z" fill="${c[1]}"/>
-  <path d="M${poses.hx-43} ${poses.hy+4} Q${poses.hx-23} ${poses.hy-8} ${poses.hx-4} ${poses.hy+4}" fill="none" stroke="#202431" stroke-width="5" stroke-linecap="round"/>
-  <path d="M${poses.hx+4} ${poses.hy+4} Q${poses.hx+23} ${poses.hy-8} ${poses.hx+43} ${poses.hy+4}" fill="none" stroke="#202431" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="${poses.hx-22}" cy="${poses.hy+4}" r="5" fill="${accent}"/><circle cx="${poses.hx+22}" cy="${poses.hy+4}" r="5" fill="${accent}"/>
-  <path d="M${poses.hx-13} ${poses.hy+38} Q${poses.hx} ${poses.hy+47} ${poses.hx+13} ${poses.hy+38}" fill="none" stroke="#8d4d58" stroke-width="4" stroke-linecap="round"/>
-  <path d="M155 410 L78 500 M245 410 L322 500" stroke="${accent}" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+   <path d="M105 520 Q108 390 145 345 Q205 305 265 345 Q300 395 302 520Z" fill="url(#coat${i})" stroke="${accent2}" stroke-width="3"/>
+   <path d="M150 355 Q205 410 255 355 L275 510 Q205 545 130 510Z" fill="#05070d" opacity=".7"/>
+   <ellipse cx="205" cy="250" rx="72" ry="84" fill="${face}" stroke="${light}" stroke-width="3"/>
+   <path d="M132 248 Q132 122 205 102 Q278 122 278 248 L250 207 Q205 166 158 207Z" fill="${hair}" stroke="${accent}" stroke-width="6"/>
+   <path d="M146 214 Q205 170 264 214" fill="none" stroke="${accent2}" stroke-width="9" opacity=".9"/>
+   <path d="M160 254 Q178 242 194 254 M216 254 Q232 242 250 254" fill="none" stroke="#222333" stroke-width="5" stroke-linecap="round"/>
+   <circle cx="178" cy="254" r="4" fill="${accent}"/><circle cx="232" cy="254" r="4" fill="${accent}"/>
+   <path d="M190 288 Q205 298 220 288" fill="none" stroke="#8d4f59" stroke-width="4" stroke-linecap="round"/>
+   <path d="M158 340 L88 455 M252 340 L322 455" stroke="${accent}" stroke-width="16" stroke-linecap="round" opacity=".8"/>
  </g>
- <rect x="18" y="18" width="150" height="28" rx="14" fill="#0008" stroke="${light}" stroke-opacity=".35"/>
- <text x="32" y="37" fill="#fff" font-size="12" font-weight="800" letter-spacing="1.5">RINAVERSE • ORIGINAL</text>
- <text x="22" y="535" fill="#fff" font-size="24" font-weight="900">${a[0]}</text>
- <text x="22" y="556" fill="${light}" font-size="11" font-weight="700">ANIME DISCOVERY</text>
+ <rect x="18" y="18" width="160" height="27" rx="13" fill="#03050acc" stroke="${light}" stroke-opacity=".45"/>
+ <text x="31" y="36" fill="#fff" font-size="11" font-weight="800" letter-spacing="1.6">RINAVERSE ORIGINAL</text>
+ <text x="22" y="492" fill="${light}" font-size="11" font-weight="800" letter-spacing="2.3">${tag}</text>
+ <text x="22" y="525" fill="#fff" font-size="25" font-weight="900">${a[0]}</text>
+ <text x="22" y="548" fill="${accent2}" font-size="10" font-weight="700" letter-spacing="1.4">${title} • ANIME POSTER</text>
  </svg>`;
 }
 function card(a){
