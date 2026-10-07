@@ -292,6 +292,8 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 .toggle.on{background:#ff267e}.toggle.on:after{left:26px}
 .settingsTitle{padding:4px 2px 6px}.settingsTitle h3{font-size:28px;margin:0 0 6px}.settingsTitle p{margin:0;color:#9eacbf}
 
+
+.episodeBox{max-width:620px;text-align:center}.episodeRow{display:flex;align-items:center;gap:12px;justify-content:center;margin:18px 0}.episodeRow label{font-weight:800}.episodeRow select{background:#101326;color:#fff;border:1px solid rgba(255,79,180,.45);border-radius:12px;padding:12px 16px;min-width:170px;font-size:15px}.officialNote{display:block;margin-top:10px;color:#a7abc3}.episodeBox .primary{margin-top:4px}
 </style>
 
 </head>
@@ -350,22 +352,28 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
     <img id="modalImg" alt="">
     <h2 id="modalTitle"></h2>
     <p id="modalMeta"></p>
-    <button class="primary" onclick="openPlayer()">▶ تشغيل تجريبي</button>
+    <button class="primary" onclick="openPlayer()">▶ مشاهدة الحلقة</button>
   </div>
 </div>
 <div class="player" id="player">
-  <div class="playerBox">
+  <div class="playerBox episodeBox">
     <button class="close" onclick="closePlayer()">×</button>
     <div class="play">▶</div>
     <h2 id="playerTitle">RinaVerse</h2>
-    <p>مشغل تجريبي — استخدم مصادر فيديو مرخّصة للحلقات الفعلية.</p>
+    <p id="playerNote">اختر الحلقة ثم افتح صفحة المشاهدة الرسمية.</p>
+    <div class="episodeRow">
+      <label for="episodeSelect">الحلقة</label>
+      <select id="episodeSelect" onchange="selectEpisode(this.value)"></select>
+    </div>
+    <button class="primary" id="officialWatch" onclick="openOfficialEpisode()">🎬 مشاهدة رسميًا</button>
+    <small class="officialNote">سيتم فتح المصدر الرسمي في صفحة جديدة.</small>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 let genre='all';const cards=[...document.querySelectorAll('.card')];
 const popularTitles=new Set(['demon slayer','one piece','attack on titan','jujutsu kaisen','naruto shippuden','solo leveling']);
-const animeTitles=new Set(cards.map(c=>c.dataset.title).filter(t=>!popularTitles.has(t)));
+const animeTitles=new Set(cards.map(c=>c.dataset.title));
 let currentSection='الرئيسية';
 let lastAnimeTitle='';
 
@@ -427,7 +435,7 @@ function renderCardList(titleList,emptyTitle,emptyText){
 }
 function renderSection(name){
   if(name==='الأنمي'){
-    renderCardList([...animeTitles],'ما عندك أنميات هنا بعد 😅','هذي الصفحة تعرض بقية الأنميات الموجودة في مكتبة RinaVerse.');
+    renderCardList([...animeTitles],'ما عندك أنميات هنا بعد 😅','هذي الصفحة تعرض كل الأنميات الموجودة في مكتبة RinaVerse.');
     return;
   }
   if(name==='قائمتي'){
@@ -465,15 +473,35 @@ function openCard(c){
   document.getElementById('cardModal').style.display='flex';
 }
 function closeCard(){document.getElementById('cardModal').style.display='none'}
+let currentEpisode=1;
+function getEpisodeCount(){
+  const c=cards.find(x=>x.dataset.title===lastAnimeTitle); if(!c)return 12;
+  const m=c.querySelector('.stats')?.innerText.match(/([0-9,]+)\s*حلقة/); return m?Math.min(parseInt(m[1].replace(/,/g,''),10),50):12;
+}
 function openPlayer(){
   closeCard();
-  if(lastAnimeTitle){
-    const history=getStore('rv_history',[]).filter(x=>x.title!==lastAnimeTitle);
-    history.unshift({title:lastAnimeTitle,at:Date.now()});
-    setStore('rv_history',history.slice(0,20));
-  }
+  currentEpisode=1;
+  const count=getEpisodeCount();
+  const select=document.getElementById('episodeSelect');
+  select.innerHTML='';
+  for(let i=1;i<=count;i++){const o=document.createElement('option');o.value=i;o.textContent=`الحلقة ${i}`;select.appendChild(o)}
   document.getElementById('playerTitle').textContent=lastAnimeTitle?`مشاهدة ${lastAnimeTitle}`:'مشغل RinaVerse';
+  document.getElementById('playerNote').textContent=`اختر الحلقة من القائمة، ثم افتحها من المصدر الرسمي.`;
   document.getElementById('player').style.display='flex';
+  recordHistory();
+}
+function selectEpisode(n){currentEpisode=parseInt(n,10)||1;recordHistory();}
+function recordHistory(){
+  if(!lastAnimeTitle)return;
+  const history=getStore('rv_history',[]).filter(x=>x.title!==lastAnimeTitle);
+  history.unshift({title:lastAnimeTitle,episode:currentEpisode,at:Date.now()});
+  setStore('rv_history',history.slice(0,20));
+}
+function openOfficialEpisode(){
+  if(!lastAnimeTitle)return;
+  recordHistory();
+  const q=encodeURIComponent(`${lastAnimeTitle} episode ${currentEpisode} official`);
+  window.open(`https://www.crunchyroll.com/search?q=${q}`,'_blank','noopener,noreferrer');
 }
 function closePlayer(){document.getElementById('player').style.display='none'}
 function toggleSort(){
