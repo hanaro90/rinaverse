@@ -387,8 +387,13 @@ function openServer(n,q){
       <label for="episodeSelect">الحلقة</label>
       <select id="episodeSelect" onchange="selectEpisode(this.value)"></select>
     </div>
+    <div id="watchServers" class="serverBox" aria-label="سيرفرات المشاهدة">
+      <div class="serverTitle">سيرفرات المشاهدة</div>
+      <div class="serverBtns" id="watchServerBtns"></div>
+      <div class="serverNote" id="watchServerNote">اختر سيرفرًا رسميًا للمشاهدة.</div>
+    </div>
     <button class="primary" id="officialWatch" onclick="openOfficialEpisode()">🎬 دخول للمشاهدة الرسمية</button>
-    <small class="officialNote">زر التشغيل وزر المشاهدة يفتحان المصدر الرسمي للحلقة المحددة.</small>
+    <small class="officialNote">إذا لم يعمل السيرفر الأول، جرّب السيرفر التالي.</small>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -500,6 +505,27 @@ function getEpisodeCount(){
   const c=cards.find(x=>x.dataset.title===lastAnimeTitle); if(!c)return 12;
   const m=c.querySelector('.stats')?.innerText.match(/([0-9,]+)\s*حلقة/); return m?Math.min(parseInt(m[1].replace(/,/g,''),10),50):12;
 }
+function renderWatchServers(){
+  const box=document.getElementById('watchServerBtns');
+  const note=document.getElementById('watchServerNote');
+  if(!box)return;
+  const title=lastAnimeTitle||'Anime';
+  const key=title.toLowerCase();
+  const cr=officialSeries[key];
+  const q=encodeURIComponent(`${title} episode ${currentEpisode} official`);
+  const servers=[];
+  if(cr) servers.push({name:'السيرفر 1 — Crunchyroll',url:cr});
+  servers.push({name:`السيرفر ${servers.length+1} — YouTube الرسمي`,url:`https://www.youtube.com/results?search_query=${q}+official`});
+  servers.push({name:`السيرفر ${servers.length+1} — بحث رسمي`,url:`https://www.google.com/search?q=${q}+official+streaming`});
+  box.innerHTML=servers.map((x,i)=>`<button type="button" class="serverBtn${i===0?' active':''}" onclick="openWatchServer('${encodeURIComponent(x.url)}',this)">${x.name}</button>`).join('');
+  note.textContent='إذا لم يعمل السيرفر الأول، جرّب السيرفر التالي. المصادر المعروضة رسمية أو بحث عن المصدر الرسمي.';
+}
+function openWatchServer(encoded,btn){
+  document.querySelectorAll('#watchServerBtns .serverBtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const url=decodeURIComponent(encoded);
+  window.open(url,'_blank','noopener,noreferrer');
+}
 function openPlayer(){
   closeCard();
   currentEpisode=1;
@@ -508,7 +534,8 @@ function openPlayer(){
   select.innerHTML='';
   for(let i=1;i<=count;i++){const o=document.createElement('option');o.value=i;o.textContent=`الحلقة ${i}`;select.appendChild(o)}
   document.getElementById('playerTitle').textContent=lastAnimeTitle?`مشاهدة ${lastAnimeTitle}`:'مشغل RinaVerse';
-  document.getElementById('playerNote').textContent=`الحلقة ${currentEpisode} محددة — اضغط ▶ أو زر الدخول للمشاهدة الرسمية.`;
+  document.getElementById('playerNote').textContent=`الحلقة ${currentEpisode} محددة — اختر السيرفر ثم اضغط المشاهدة.`;
+  renderWatchServers();
   document.getElementById('player').style.display='flex';
   recordHistory();
 }
@@ -644,12 +671,5 @@ function resetSettings(){
 }
 
 </script>
-<div id="serverBox" class="serverBox"></div><script>
-(function(){
- const oldOpen=window.openWatch;
- if(typeof oldOpen==='function'){
-  window.openWatch=function(anime){ oldOpen.apply(this,arguments); setTimeout(()=>showOfficialServers(anime||'Anime'),50); };
- }
-})();
-</script>
+
 </body></html>
