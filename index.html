@@ -221,10 +221,82 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 @media(prefers-reduced-motion:reduce){
   #intro *{animation:none!important;transition:none!important}
 }
+
+/* Sidebar quality + dedicated section pages */
+@media(max-width:820px){
+  .sidebar{
+    width:290px;
+    min-width:290px;
+    padding:22px 15px 24px;
+    background:
+      linear-gradient(180deg,rgba(2,8,16,.72),rgba(2,8,16,.9)),
+      var(--sidebar-art, none);
+    background-size:cover;
+    background-position:center;
+    border-right:1px solid rgba(255,38,126,.18);
+  }
+  .sidebar .logo{
+    font-size:34px;
+    margin:2px 12px 30px;
+    text-shadow:0 0 24px rgba(255,38,126,.18);
+  }
+  .sidebar .nav{gap:8px}
+  .sidebar .nav button{
+    min-height:56px;
+    font-size:17px;
+    padding:13px 18px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .sidebar .nav button.active{
+    box-shadow:inset 3px 0 0 #ff267e,0 8px 24px rgba(255,38,126,.08);
+  }
+  .sidebar .profile{
+    margin-top:25px;
+    padding:13px;
+    backdrop-filter:blur(5px);
+  }
+}
+.pageLayer{
+  position:fixed;inset:0;z-index:200;display:none;
+  background:#020812;color:#fff;overflow:auto;
+}
+.pageLayer.open{display:block}
+.pageHead{
+  position:sticky;top:0;z-index:3;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  background:rgba(2,8,16,.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid #173a54;
+}
+.pageHead h2{margin:0;font-size:22px}.pageBack{
+  border:1px solid #294b65;background:#071321;color:#fff;
+  width:42px;height:42px;border-radius:12px;cursor:pointer;font-size:21px;
+}
+.pageBody{padding:24px 18px 50px;max-width:1100px;margin:auto}
+.pageHero{
+  padding:28px;border:1px solid #1c405c;border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,38,126,.11),rgba(8,24,40,.8));
+}
+.pageHero h3{font-size:30px;margin:0 0 10px}.pageHero p{color:#b9c6d5;line-height:1.7}
+.pageGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.pageTile{padding:18px;border:1px solid #173c58;border-radius:16px;background:#071321}
+@media(max-width:600px){.pageGrid{grid-template-columns:1fr}.pageHero h3{font-size:25px}}
+
 </style>
 
 </head>
 <body>
+<div class="pageLayer" id="sectionPage">
+  <div class="pageHead">
+    <button class="pageBack" onclick="closeSection()">‹</button>
+    <h2 id="sectionTitle">الأنمي</h2>
+  </div>
+  <div class="pageBody" id="sectionBody"></div>
+</div>
+
 <div id="intro" aria-label="RinaVerse opening">
   <div class="intro-bg"></div><div class="intro-grid"></div>
   <i class="intro-orb one"></i><i class="intro-orb two"></i><i class="intro-orb three"></i>
@@ -240,16 +312,16 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 </div>
 
 <div class="app">
-<aside class="sidebar">
+<aside class="sidebar" style="--sidebar-art:url('posters/sidebar.jpg')">
 <div class="logo"><span class="pink">Rina</span>Verse</div>
 <nav class="nav">
-      <button class="active" onclick="navAction('الرئيسية',this)">⌂　الرئيسية</button>
-      <button onclick="navAction('الأنمي',this)">▣　الأنمي</button>
-      <button onclick="navAction('الأفلام',this)">▤　الأفلام</button>
-      <button onclick="navAction('قائمتي',this)">▢　قائمتي</button>
-      <button onclick="navAction('المفضلة',this)">♡　المفضلة</button>
-      <button onclick="navAction('التاريخ',this)">◷　التاريخ</button>
-      <button onclick="navAction('الإعدادات',this)">⚙　الإعدادات</button>
+      <button class="active" onclick="openSection('الرئيسية',this)">⌂　الرئيسية</button>
+      <button onclick="openSection('الأنمي',this)">▣　الأنمي</button>
+      <button onclick="openSection('الأفلام',this)">▤　الأفلام</button>
+      <button onclick="openSection('قائمتي',this)">▢　قائمتي</button>
+      <button onclick="openSection('المفضلة',this)">♡　المفضلة</button>
+      <button onclick="openSection('التاريخ',this)">◷　التاريخ</button>
+      <button onclick="openSection('الإعدادات',this)">⚙　الإعدادات</button>
     </nav>
 <div class="profile"><div class="avatar"></div><div><strong>Rina 👑</strong><small>Welcome back, Senpai</small></div></div>
 </aside>
@@ -296,19 +368,7 @@ function setGenre(g,b){genre=g;document.querySelectorAll('.filters button').forE
 function toggleFav(e,b){e.stopPropagation();b.classList.toggle('on');b.textContent=b.classList.contains('on')?'♥':'♡';showToast(b.classList.contains('on')?'تمت الإضافة للمفضلة ❤️':'تمت الإزالة من المفضلة')}
 function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1700)}
 
-function navAction(name, btn){
-  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
-  btn.classList.add('active');
-  if(name==='الرئيسية'){ cards.forEach(c=>c.style.display='block'); genre='all'; }
-  if(name==='المفضلة'){
-    cards.forEach(c=>c.style.display=c.querySelector('.fav.on')?'block':'none');
-  }
-  if(name==='الأنمي'){ cards.forEach(c=>c.style.display='block'); }
-  if(name==='الأفلام'){ showToast('قسم الأفلام جاهز للإضافة 🎬'); }
-  if(name==='قائمتي'){ showToast('قائمتك جاهزة — أضف الأنميات بالمفضلة ❤️'); }
-  if(name==='التاريخ'){ showToast('لا يوجد سجل مشاهدة حتى الآن'); }
-  if(name==='الإعدادات'){ showToast('الإعدادات قيد التجهيز ⚙️'); }
-}
+
 function openCard(c){
   document.getElementById('modalTitle').textContent=c.querySelector('h3').textContent;
   document.getElementById('modalImg').src=c.querySelector('img').src;
@@ -359,6 +419,32 @@ function closeIntro(){
 window.addEventListener('load',()=>{
   setTimeout(closeIntro,5500);
 });
+
+
+const sectionContent={
+  'الأنمي':`<div class="pageHero"><h3>قسم الأنمي 🎬</h3><p>استكشف الأنميات الموجودة في RinaVerse وابحث عن العمل الذي تريده.</p></div>`,
+  'الأفلام':`<div class="pageHero"><h3>قسم الأفلام 🍿</h3><p>صفحة مخصصة للأفلام والـOVA والـSpecials. نقدر نضيف محتواها لاحقًا.</p></div>`,
+  'قائمتي':`<div class="pageHero"><h3>قائمتي 📚</h3><p>هنا تكون الأعمال التي تختارها لمتابعتها لاحقًا.</p></div>`,
+  'المفضلة':`<div class="pageHero"><h3>المفضلة ❤️</h3><p>الأعمال التي ضغطت عليها بالقلب تظهر هنا.</p></div>`,
+  'التاريخ':`<div class="pageHero"><h3>سجل المشاهدة ◷</h3><p>صفحة مخصصة للأعمال التي شاهدتها مؤخرًا.</p></div>`,
+  'الإعدادات':`<div class="pageHero"><h3>الإعدادات ⚙️</h3><p>هنا نضيف إعدادات المظهر، اللغة، الإشعارات وغيرها.</p></div>`
+};
+function openSection(name,btn){
+  if(name==='الرئيسية'){
+    closeSection();
+    if(typeof closeDrawer==='function') closeDrawer();
+    return;
+  }
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sectionTitle').textContent=name;
+  document.getElementById('sectionBody').innerHTML=sectionContent[name]||'';
+  document.getElementById('sectionPage').classList.add('open');
+  if(typeof closeDrawer==='function') closeDrawer();
+}
+function closeSection(){
+  document.getElementById('sectionPage').classList.remove('open');
+}
 
 </script>
 </body></html>
