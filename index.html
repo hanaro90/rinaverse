@@ -422,27 +422,27 @@ document.querySelectorAll('.sidebar .nav button').forEach(b=>{
 
 function closeIntro(){
   const intro=document.getElementById('intro');
-  if(!intro || intro.classList.contains('hide'))return;
+  if(!intro)return;
   intro.classList.add('hide');
-  // Remove it after the fade so it cannot block clicks on the site.
-  setTimeout(()=>{ if(intro && intro.parentNode) intro.remove(); },800);
+  intro.style.pointerEvents='none';
+  document.body.classList.remove('intro-open');
+  setTimeout(()=>{ if(intro && intro.parentNode) intro.remove(); },850);
 }
 
-// Make the opening controls reliable on iPhone/Safari as well as desktop.
+// Reliable opening controls for iPhone/Safari, including touch and mouse.
 window.addEventListener('DOMContentLoaded',()=>{
   const intro=document.getElementById('intro');
   if(!intro)return;
   const closeButtons=intro.querySelectorAll('.intro-skip,.intro-enter');
   closeButtons.forEach(btn=>{
-    btn.addEventListener('touchend',e=>{ e.preventDefault(); closeIntro(); },{passive:false});
-    btn.addEventListener('pointerup',e=>{ e.preventDefault(); closeIntro(); });
+    btn.style.touchAction='manipulation';
+    btn.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); closeIntro(); },true);
+    btn.addEventListener('touchend',e=>{ e.preventDefault(); e.stopPropagation(); closeIntro(); },{passive:false,capture:true});
+    btn.addEventListener('pointerup',e=>{ e.preventDefault(); e.stopPropagation(); closeIntro(); },true);
   });
-  // Safety fallback: tapping the opening itself twice also closes it.
   intro.addEventListener('dblclick',closeIntro);
 });
-window.addEventListener('load',()=>{
-  setTimeout(closeIntro,5500);
-});
+window.addEventListener('load',()=>setTimeout(closeIntro,5500));
 
 
 const sectionContent={
