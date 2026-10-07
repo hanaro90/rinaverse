@@ -257,10 +257,39 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 .sectionHero{padding:28px;border:1px solid #1b405c;border-radius:20px;background:linear-gradient(135deg,rgba(255,38,126,.12),rgba(7,19,33,.9))}
 .sectionHero h3{margin:0 0 10px;font-size:30px}.sectionHero p{margin:0;color:#bcc8d6;line-height:1.8}
 
+
+.sectionPage{position:fixed;inset:0;z-index:1000;display:none;background:#020812;color:#fff;overflow:auto}
+.sectionPage.open{display:block;animation:sectionIn .22s ease}
+.sectionTop{position:sticky;top:0;z-index:2;height:70px;display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(2,8,16,.94);backdrop-filter:blur(16px);border-bottom:1px solid #173a54}
+.sectionTop h2{margin:0;font-size:22px}
+.sectionBack{width:44px;height:44px;border-radius:13px;border:1px solid #294b65;background:#071321;color:#fff;font-size:27px;cursor:pointer}
+.sectionBody{max-width:1100px;margin:auto;padding:22px 16px 60px}
+.sectionHero{padding:28px;border:1px solid #1b405c;border-radius:20px;background:linear-gradient(135deg,rgba(255,38,126,.13),rgba(7,19,33,.92));box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.sectionHero h3{margin:0 0 10px;font-size:30px}.sectionHero p{margin:0;color:#bcc8d6;line-height:1.8}
+.nav button{display:flex;align-items:center;gap:10px}.nav button span{flex:1}
+@keyframes sectionIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:820px){
+.sidebar{width:292px!important;min-width:292px!important;padding:20px 14px 24px!important;background-size:cover!important;background-position:center!important}
+.sidebar .logo{font-size:34px!important;margin:2px 12px 28px!important}
+.sidebar .nav{gap:7px!important}.sidebar .nav button{width:100%;min-height:56px!important;padding:12px 18px!important;font-size:17px!important;border-radius:16px!important}
+.sectionTop{height:64px;padding:9px 12px}.sectionTop h2{font-size:20px}.sectionBody{padding:18px 12px 45px}.sectionHero{padding:22px}.sectionHero h3{font-size:25px}
+}
+
+.settingsPage{display:grid;gap:12px;max-width:760px}
+.settingCard{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border:1px solid #173c58;border-radius:16px;background:#071321}
+.settingText strong{display:block;font-size:16px}.settingText small{display:block;color:#9eacbf;margin-top:5px;line-height:1.5}
+.settingSelect{border:1px solid #31536e;background:#061321;color:#fff;border-radius:11px;padding:9px 12px;outline:0}
+.toggle{width:52px;height:30px;border:0;border-radius:20px;background:#26384a;position:relative;cursor:pointer;flex:0 0 auto}
+.toggle:after{content:"";position:absolute;width:22px;height:22px;top:4px;left:4px;border-radius:50%;background:#fff;transition:.2s}
+.toggle.on{background:#ff267e}.toggle.on:after{left:26px}
+.settingsTitle{padding:4px 2px 6px}.settingsTitle h3{font-size:28px;margin:0 0 6px}.settingsTitle p{margin:0;color:#9eacbf}
+
 </style>
 
 </head>
-<body>
+<body><div class="sectionPage" id="sectionPage" aria-hidden="true">
+<div class="sectionTop"><button class="sectionBack" onclick="closeSection()">‹</button><h2 id="sectionTitle">الأنمي</h2></div>
+<div class="sectionBody" id="sectionBody"></div></div>
 <div class="sectionPage" id="sectionPage">
   <div class="sectionTop"><button class="sectionBack" onclick="closeSection()">‹</button><h2 id="sectionTitle">الأنمي</h2></div>
   <div class="sectionBody" id="sectionBody"></div>
@@ -283,15 +312,15 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 <div class="app">
 <aside class="sidebar">
 <div class="logo"><span class="pink">Rina</span>Verse</div>
-<nav class="nav">
-      <button class="active" onclick="openSection('الرئيسية',this)">⌂　الرئيسية</button>
-      <button onclick="openSection('الأنمي',this)">▣　الأنمي</button>
-      <button onclick="openSection('الأفلام',this)">▤　الأفلام</button>
-      <button onclick="openSection('قائمتي',this)">▢　قائمتي</button>
-      <button onclick="openSection('المفضلة',this)">♡　المفضلة</button>
-      <button onclick="openSection('التاريخ',this)">◷　التاريخ</button>
-      <button onclick="openSection('الإعدادات',this)">⚙　الإعدادات</button>
-    </nav>
+<nav class="nav" aria-label="القائمة الرئيسية">
+<button class="active" onclick="openSection('الرئيسية',this)">⌂ <span>الرئيسية</span></button>
+<button onclick="openSection('الأنمي',this)">▣ <span>الأنمي</span></button>
+<button onclick="openSection('الأفلام',this)">▤ <span>الأفلام</span></button>
+<button onclick="openSection('قائمتي',this)">▢ <span>قائمتي</span></button>
+<button onclick="openSection('المفضلة',this)">♡ <span>المفضلة</span></button>
+<button onclick="openSection('التاريخ',this)">◷ <span>التاريخ</span></button>
+<button onclick="openSection('الإعدادات',this)">⚙ <span>الإعدادات</span></button>
+</nav>
 <div class="profile"><div class="avatar"></div><div><strong>Rina 👑</strong><small>Welcome back, Senpai</small></div></div>
 </aside>
 <div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div><main class="main">
@@ -408,7 +437,38 @@ const sectionContent={
   "قائمتي":`<div class="sectionHero"><h3>قائمتي 📚</h3><p>هنا تظهر الأعمال التي اخترتها للمتابعة لاحقًا.</p></div>`,
   "المفضلة":`<div class="sectionHero"><h3>المفضلة ❤️</h3><p>كل الأنميات التي ضغطت عليها بالقلب.</p></div>`,
   "التاريخ":`<div class="sectionHero"><h3>التاريخ ◷</h3><p>سجل الأعمال التي فتحتها وشاهدتها مؤخرًا.</p></div>`,
-  "الإعدادات":`<div class="sectionHero"><h3>الإعدادات ⚙️</h3><p>إعدادات RinaVerse ستتوفر هنا.</p></div>`
+  "الإعدادات":`
+<div class="settingsPage">
+  <div class="settingsTitle">
+    <h3>إعدادات RinaVerse ⚙️</h3>
+    <p>خصص تجربة الموقع بالطريقة اللي تناسبك.</p>
+  </div>
+  <div class="settingCard">
+    <div class="settingText"><strong>الإشعارات</strong><small>إظهار تنبيهات الموقع.</small></div>
+    <button class="toggle on" onclick="toggleSetting(this,'الإشعارات')"></button>
+  </div>
+  <div class="settingCard">
+    <div class="settingText"><strong>التأثيرات والحركة</strong><small>تشغيل الحركات والانتقالات السينمائية.</small></div>
+    <button class="toggle on" onclick="toggleSetting(this,'التأثيرات والحركة')"></button>
+  </div>
+  <div class="settingCard">
+    <div class="settingText"><strong>اللغة</strong><small>لغة واجهة RinaVerse.</small></div>
+    <select class="settingSelect" onchange="showToast('تم اختيار '+this.value)">
+      <option>العربية</option><option>English</option>
+    </select>
+  </div>
+  <div class="settingCard">
+    <div class="settingText"><strong>جودة الصور</strong><small>اختر مستوى جودة الصور في الموقع.</small></div>
+    <select class="settingSelect" onchange="showToast('الجودة: '+this.value)">
+      <option>عالية</option><option>متوسطة</option><option>توفير البيانات</option>
+    </select>
+  </div>
+  <div class="settingCard">
+    <div class="settingText"><strong>إعادة ضبط الإعدادات</strong><small>إرجاع الخيارات للوضع الافتراضي.</small></div>
+    <button class="secondary" onclick="resetSettings()">إعادة ضبط</button>
+  </div>
+</div>
+`
 };
 function openSection(name,btn){
   if(name==="الرئيسية"){closeSection();closeDrawer();return;}
@@ -421,6 +481,34 @@ function openSection(name,btn){
 }
 function closeSection(){
   document.getElementById("sectionPage").classList.remove("open");
+}
+
+
+const sectionContent={
+"الأنمي":`<div class="sectionHero"><h3>قسم الأنمي 🎬</h3><p>استكشف مكتبة RinaVerse وابحث عن أنميك المفضل.</p></div>`,
+"الأفلام":`<div class="sectionHero"><h3>قسم الأفلام 🍿</h3><p>هنا نضع الأفلام والـOVA والـSpecials.</p></div>`,
+"قائمتي":`<div class="sectionHero"><h3>قائمتي 📚</h3><p>الأعمال التي تختارها لمتابعتها لاحقًا تظهر هنا.</p></div>`,
+"المفضلة":`<div class="sectionHero"><h3>المفضلة ❤️</h3><p>الأنميات التي تضيفها إلى المفضلة.</p></div>`,
+"التاريخ":`<div class="sectionHero"><h3>التاريخ ◷</h3><p>سجل الأعمال التي فتحتها أو شاهدتها مؤخرًا.</p></div>`,
+"الإعدادات":`<div class="sectionHero"><h3>الإعدادات ⚙️</h3><p>إعدادات RinaVerse ستكون هنا.</p></div>`};
+function openSection(name,btn){
+if(name==="الرئيسية"){closeSection();if(typeof closeDrawer==="function")closeDrawer();return}
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+if(btn)btn.classList.add("active");
+const p=document.getElementById("sectionPage");document.getElementById("sectionTitle").textContent=name;
+document.getElementById("sectionBody").innerHTML=sectionContent[name]||`<div class="sectionHero"><h3>${name}</h3><p>هذه الصفحة جاهزة.</p></div>`;
+p.classList.add("open");p.setAttribute("aria-hidden","false");document.body.classList.remove("drawer-open");window.scrollTo(0,0)}
+function closeSection(){const p=document.getElementById("sectionPage");if(p){p.classList.remove("open");p.setAttribute("aria-hidden","true")}}
+
+
+function toggleSetting(btn,name){
+  btn.classList.toggle("on");
+  showToast(name + (btn.classList.contains("on") ? " مفعّلة ✓" : " متوقفة"));
+}
+function resetSettings(){
+  document.querySelectorAll(".settingsPage .toggle").forEach(b=>b.classList.add("on"));
+  document.querySelectorAll(".settingsPage select").forEach((s,i)=>s.selectedIndex=0);
+  showToast("تمت إعادة ضبط الإعدادات ✓");
 }
 
 </script>
