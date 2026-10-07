@@ -290,11 +290,6 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 <body><div class="sectionPage" id="sectionPage" aria-hidden="true">
 <div class="sectionTop"><button class="sectionBack" onclick="closeSection()">‹</button><h2 id="sectionTitle">الأنمي</h2></div>
 <div class="sectionBody" id="sectionBody"></div></div>
-<div class="sectionPage" id="sectionPage">
-  <div class="sectionTop"><button class="sectionBack" onclick="closeSection()">‹</button><h2 id="sectionTitle">الأنمي</h2></div>
-  <div class="sectionBody" id="sectionBody"></div>
-</div>
-
 <div id="intro" aria-label="RinaVerse opening">
   <div class="intro-bg"></div><div class="intro-grid"></div>
   <i class="intro-orb one"></i><i class="intro-orb two"></i><i class="intro-orb three"></i>
@@ -496,23 +491,6 @@ function openSection(name,btn){
 function closeSection(){
   document.getElementById("sectionPage").classList.remove("open");
 }
-
-
-const sectionContent={
-"الأنمي":`<div class="sectionHero"><h3>قسم الأنمي 🎬</h3><p>استكشف مكتبة RinaVerse وابحث عن أنميك المفضل.</p></div>`,
-"الأفلام":`<div class="sectionHero"><h3>قسم الأفلام 🍿</h3><p>هنا نضع الأفلام والـOVA والـSpecials.</p></div>`,
-"قائمتي":`<div class="sectionHero"><h3>قائمتي 📚</h3><p>الأعمال التي تختارها لمتابعتها لاحقًا تظهر هنا.</p></div>`,
-"المفضلة":`<div class="sectionHero"><h3>المفضلة ❤️</h3><p>الأنميات التي تضيفها إلى المفضلة.</p></div>`,
-"التاريخ":`<div class="sectionHero"><h3>التاريخ ◷</h3><p>سجل الأعمال التي فتحتها أو شاهدتها مؤخرًا.</p></div>`,
-"الإعدادات":`<div class="sectionHero"><h3>الإعدادات ⚙️</h3><p>إعدادات RinaVerse ستكون هنا.</p></div>`};
-function openSection(name,btn){
-if(name==="الرئيسية"){closeSection();if(typeof closeDrawer==="function")closeDrawer();return}
-document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-if(btn)btn.classList.add("active");
-const p=document.getElementById("sectionPage");document.getElementById("sectionTitle").textContent=name;
-document.getElementById("sectionBody").innerHTML=sectionContent[name]||`<div class="sectionHero"><h3>${name}</h3><p>هذه الصفحة جاهزة.</p></div>`;
-p.classList.add("open");p.setAttribute("aria-hidden","false");document.body.classList.remove("drawer-open");window.scrollTo(0,0)}
-function closeSection(){const p=document.getElementById("sectionPage");if(p){p.classList.remove("open");p.setAttribute("aria-hidden","true")}}
 
 
 function toggleSetting(btn,name){
