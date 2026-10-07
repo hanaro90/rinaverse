@@ -299,6 +299,25 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 .playBtn:focus-visible{outline:2px solid #ff4fb4;outline-offset:4px}
 </style>
 
+
+<style>
+.serverBox{margin-top:18px;padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(10,14,28,.75)}
+.serverTitle{font-weight:800;margin-bottom:10px}.serverBtns{display:flex;gap:10px;flex-wrap:wrap}.serverBtn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#171c30;color:#fff;cursor:pointer}.serverBtn.active{background:#ff3fa4;border-color:#ff3fa4}.serverNote{margin-top:10px;font-size:12px;color:#aeb4c7;line-height:1.6}
+</style>
+<script>
+function showOfficialServers(anime){
+ const box=document.getElementById('serverBox'); if(!box)return;
+ const q=encodeURIComponent(anime+' episode 1 official');
+ box.innerHTML='<div class="serverTitle">مصادر المشاهدة</div><div class="serverBtns">'
+ +'<button class="serverBtn active" onclick="openServer(1,\''+q+'\')">السيرفر 1 — رسمي</button>'
+ +'<button class="serverBtn" onclick="openServer(2,\''+q+'\')">السيرفر 2 — YouTube الرسمي</button>'
+ +'</div><div class="serverNote">إذا لم يعمل المصدر الأول، جرّب المصدر الثاني. يتم فتح المصدر الرسمي فقط.</div>';
+}
+function openServer(n,q){
+ const urls=n===1?['https://www.crunchyroll.com/search?q='+q]:['https://www.youtube.com/results?search_query='+q+'+official'];
+ window.open(urls[0],'_blank','noopener,noreferrer');
+}
+</script>
 </head>
 <body><div class="sectionPage" id="sectionPage" aria-hidden="true">
 <div class="sectionTop"><button class="sectionBack" onclick="closeSection()">‹</button><h2 id="sectionTitle">الأنمي</h2></div>
@@ -624,5 +643,13 @@ function resetSettings(){
   showToast("تمت إعادة ضبط الإعدادات ✓");
 }
 
+</script>
+<div id="serverBox" class="serverBox"></div><script>
+(function(){
+ const oldOpen=window.openWatch;
+ if(typeof oldOpen==='function'){
+  window.openWatch=function(anime){ oldOpen.apply(this,arguments); setTimeout(()=>showOfficialServers(anime||'Anime'),50); };
+ }
+})();
 </script>
 </body></html>
