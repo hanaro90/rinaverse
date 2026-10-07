@@ -424,8 +424,22 @@ function closeIntro(){
   const intro=document.getElementById('intro');
   if(!intro || intro.classList.contains('hide'))return;
   intro.classList.add('hide');
-  setTimeout(()=>intro.remove(),800);
+  // Remove it after the fade so it cannot block clicks on the site.
+  setTimeout(()=>{ if(intro && intro.parentNode) intro.remove(); },800);
 }
+
+// Make the opening controls reliable on iPhone/Safari as well as desktop.
+window.addEventListener('DOMContentLoaded',()=>{
+  const intro=document.getElementById('intro');
+  if(!intro)return;
+  const closeButtons=intro.querySelectorAll('.intro-skip,.intro-enter');
+  closeButtons.forEach(btn=>{
+    btn.addEventListener('touchend',e=>{ e.preventDefault(); closeIntro(); },{passive:false});
+    btn.addEventListener('pointerup',e=>{ e.preventDefault(); closeIntro(); });
+  });
+  // Safety fallback: tapping the opening itself twice also closes it.
+  intro.addEventListener('dblclick',closeIntro);
+});
 window.addEventListener('load',()=>{
   setTimeout(closeIntro,5500);
 });
