@@ -294,6 +294,9 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 
 
 .episodeBox{max-width:620px;text-align:center}.episodeRow{display:flex;align-items:center;gap:12px;justify-content:center;margin:18px 0}.episodeRow label{font-weight:800}.episodeRow select{background:#101326;color:#fff;border:1px solid rgba(255,79,180,.45);border-radius:12px;padding:12px 16px;min-width:170px;font-size:15px}.officialNote{display:block;margin-top:10px;color:#a7abc3}.episodeBox .primary{margin-top:4px}
+.playBtn{border:0;cursor:pointer;transition:transform .18s ease,filter .18s ease}
+.playBtn:hover,.playBtn:active{transform:scale(1.06);filter:brightness(1.12)}
+.playBtn:focus-visible{outline:2px solid #ff4fb4;outline-offset:4px}
 </style>
 
 </head>
@@ -358,15 +361,15 @@ body{overflow-x:hidden}button,input{font:inherit}.app{min-height:100vh;display:f
 <div class="player" id="player">
   <div class="playerBox episodeBox">
     <button class="close" onclick="closePlayer()">×</button>
-    <div class="play">▶</div>
+    <button class="play playBtn" type="button" onclick="openOfficialEpisode()" aria-label="فتح المشاهدة الرسمية">▶</button>
     <h2 id="playerTitle">RinaVerse</h2>
-    <p id="playerNote">اختر الحلقة ثم افتح صفحة المشاهدة الرسمية.</p>
+    <p id="playerNote">اختر الحلقة، ثم اضغط زر التشغيل للدخول إلى المشاهدة الرسمية.</p>
     <div class="episodeRow">
       <label for="episodeSelect">الحلقة</label>
       <select id="episodeSelect" onchange="selectEpisode(this.value)"></select>
     </div>
-    <button class="primary" id="officialWatch" onclick="openOfficialEpisode()">🎬 مشاهدة رسميًا</button>
-    <small class="officialNote">سيتم فتح المصدر الرسمي في صفحة جديدة.</small>
+    <button class="primary" id="officialWatch" onclick="openOfficialEpisode()">🎬 دخول للمشاهدة الرسمية</button>
+    <small class="officialNote">زر التشغيل وزر المشاهدة يفتحان المصدر الرسمي للحلقة المحددة.</small>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -486,7 +489,7 @@ function openPlayer(){
   select.innerHTML='';
   for(let i=1;i<=count;i++){const o=document.createElement('option');o.value=i;o.textContent=`الحلقة ${i}`;select.appendChild(o)}
   document.getElementById('playerTitle').textContent=lastAnimeTitle?`مشاهدة ${lastAnimeTitle}`:'مشغل RinaVerse';
-  document.getElementById('playerNote').textContent=`اختر الحلقة من القائمة، ثم افتحها من المصدر الرسمي.`;
+  document.getElementById('playerNote').textContent=`الحلقة ${currentEpisode} محددة — اضغط ▶ أو زر الدخول للمشاهدة الرسمية.`;
   document.getElementById('player').style.display='flex';
   recordHistory();
 }
@@ -497,11 +500,22 @@ function recordHistory(){
   history.unshift({title:lastAnimeTitle,episode:currentEpisode,at:Date.now()});
   setStore('rv_history',history.slice(0,20));
 }
+const officialSeries={
+  "demon slayer":"https://www.crunchyroll.com/series/GY5P48XEY/demon-slayer-kimetsu-no-yaiba",
+  "solo leveling":"https://www.crunchyroll.com/series/GDKHZEJ0K/solo-leveling",
+  "attack on titan":"https://www.crunchyroll.com/series/GR751KNZY/attack-on-titan"
+};
+
 function openOfficialEpisode(){
   if(!lastAnimeTitle)return;
   recordHistory();
+  const seriesUrl=officialSeries[lastAnimeTitle];
+  if(seriesUrl){
+    window.location.href=seriesUrl;
+    return;
+  }
   const q=encodeURIComponent(`${lastAnimeTitle} episode ${currentEpisode} official`);
-  window.open(`https://www.crunchyroll.com/search?q=${q}`,'_blank','noopener,noreferrer');
+  window.location.href=`https://www.crunchyroll.com/search?q=${q}`;
 }
 function closePlayer(){document.getElementById('player').style.display='none'}
 function toggleSort(){
